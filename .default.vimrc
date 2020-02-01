@@ -7,6 +7,7 @@ filetype plugin indent on
 set path+=app/**
 set path+=config/**
 set path+=db/**
+set path+=spec/**
 
 " sets tab indentation, etc.
 set tabstop=2
