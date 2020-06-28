@@ -59,3 +59,12 @@ set incsearch
 " command to match start and end of things like html tags and method definitions.
 runtime macros/matchit.vim
 
+function! JournalToday()
+  let filename = strftime("~/journal/%Y-%m-%d.markdown")
+  echo "Opened journal: " . filename
+  execute "vsplit" filename
+endfunction
+
+" executing a function is literal: enter command-line mode, enter call and the
+" function name, and press return
+nnoremap <leader>jt :call JournalToday()<CR>
