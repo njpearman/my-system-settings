@@ -65,6 +65,13 @@ function! JournalToday()
   execute "vsplit" filename
 endfunction
 
+function! CookingToday()
+  let filename = strftime("~/journal/cooking/%Y-%m-%d.markdown")
+  echo "Opened cooking journal: " . filename
+  execute "vsplit" filename
+endfunction
+
 " executing a function is literal: enter command-line mode, enter call and the
 " function name, and press return
 nnoremap <leader>jt :call JournalToday()<CR>
+nnoremap <leader>jm :call CookingToday()<CR>
