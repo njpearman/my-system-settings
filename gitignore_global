@@ -19,3 +19,6 @@ tags
 [._]*.un~
 # git mergefiles
 *.orig
+
+# macos metadata
+.DS_Store
