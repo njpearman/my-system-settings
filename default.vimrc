@@ -53,6 +53,10 @@ set cursorcolumn " Include visual column cursor
 " makes vim look for tags only in ./tags
 set tags=tags
 
+" ignores swap files in Vim
+" (one tip from this really good video: https://www.youtube.com/watch?v=Gs1VDYnS-Ac )
+set noswapfile
+
 " substitutes grep with ack
 " this is less useful once using fzf, and could be replaced with ripgrep
 set grepprg=ack\ --nogroup\ --column\ --ignore-dir\ node_modules\ --ignore-dir\ log\ $*
