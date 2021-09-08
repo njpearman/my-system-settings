@@ -66,6 +66,14 @@ set grepformat=%f:%l:%c:%m
 set hlsearch
 set incsearch
 
+" Settings for vim-markdown
+let g:vim_markdown_folding_style_pythonic = 1
+
+" enable British spell checking
+augroup Spelling
+ autocmd BufRead,BufNewFile *.sql,*.markdown,*.md setlocal spell spelllang=en_gb
+augroup end
+
 " enables the default matchit plugin shipped with vim. this enhances the `%`
 " command to match start and end of things like html tags and method definitions.
 runtime macros/matchit.vim
