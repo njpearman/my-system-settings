@@ -2,21 +2,26 @@
 " Do this first so that they are available in the rest of the file
 call plug#begin('~/.vim/plugged')
 
+" Some navigation help from Tim Pope
+Plug 'tpope/vim-unimpaired'
+
 " file find and search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " syntax highlighting
-Plug 'gabrielelana/vim-markdown'
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+" Plug 'pangloss/vim-javascript'
+" Plug 'leafgarland/typescript-vim'
 
 " colour schemes
 Plug 'jacoborus/tender.vim'
-Plug 'AlessandroYorba/Sierra'
+" Plug 'AlessandroYorba/Sierra'
 
 " language server
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" CoC seems to be the root cause of slowdown in Vim
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
