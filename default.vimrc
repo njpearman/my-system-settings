@@ -78,19 +78,44 @@ augroup end
 " command to match start and end of things like html tags and method definitions.
 runtime macros/matchit.vim
 
-function! JournalToday()
+" Disable autocomplete in all files because it slows Vim down massively
+" (I have disabled CoC entirely)
+" autocmd FileType * let b:coc_suggest_disable=1
+
+highlight MarkTodos ctermbg=yellow guibg=yellow ctermfg=darkgrey  guifg=darkgrey
+match MarkTodos /\* \[[ *x]\]/
+
+augroup Todos
+  autocmd BufEnter *.md,*.markdown match MarkTodos /\* \[[ *x]\]/
+  autocmd InsertLeave *.md,*.markdown match MarkTodos /\* \[[ *x]\]/
+augroup end
+
+" My macros for opening and editing journal entries for today
+function! JournalTodayVertical()
   let filename = strftime("~/journal/%Y-%m-%d.markdown")
   echo "Opened journal: " . filename
   execute "vsplit" filename
 endfunction
 
+function! JournalToday()
+  let filename = strftime("~/journal/%Y-%m-%d.markdown")
+  echo "Opened journal: " . filename
+  execute "split" filename
+endfunction
+
 function! CookingToday()
   let filename = strftime("~/journal/cooking/%Y-%m-%d.markdown")
   echo "Opened cooking journal: " . filename
-  execute "vsplit" filename
+  execute "split" filename
+endfunction
+
+function! ProfanityTypos()
+  echo "Opened profanity file"
+  execute "split" "~/journal/profanities.txt"
 endfunction
 
 " executing a function is literal: enter command-line mode, enter call and the
 " function name, and press return
+nnoremap <leader>jT :call JournalTodayVertical()<CR>
 nnoremap <leader>jt :call JournalToday()<CR>
 nnoremap <leader>jm :call CookingToday()<CR>
