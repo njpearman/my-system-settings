@@ -47,6 +47,8 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
+set nu
+set cursorcolumn " Include visual column cursor
 
 " makes vim look for tags only in ./tags
 set tags=tags
