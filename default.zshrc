@@ -136,7 +136,7 @@ export NVM_DIR="$HOME/.nvm"
 if [[ `ssh-add -L` != (*`cat ~/.ssh/github_rsa.pub`*) ]]
 then
   echo "Adding missing github SSH key to keychain"
-  ssh-add -K ~/.ssh/github_rsa
+  ssh-add --apple-use-keychain ~/.ssh/github_rsa
 fi
 
 # Customize FZF default command, particularly to ignore
