@@ -179,6 +179,18 @@ function ggcm() {
   fi
 }
 
+function ggpm() {
+  local branch=`git branch --show-current`
+
+  if [[ ${branch} == "master" ||  ${branch} == "main" ]]
+  then
+    git pull origin ${branch}
+  else
+    echo "Not on main/master branch"
+    return 1
+  fi
+}
+
 # Short form git pull origin <current branch>
 alias ggpo="git pull origin \$(git branch --show-current)"
 
