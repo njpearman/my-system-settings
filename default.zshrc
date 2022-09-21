@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="~/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -107,8 +107,8 @@ source $ZSH/oh-my-zsh.sh
 
 # Adds FZF to path from Vim plugins
 export PATH=$PATH:~/.vim/plugged/fzf/bin
-export PATH=/Users/neill/Code/wellcar/bin:$PATH
-export PATH="/Users/neill/.deno/bin:$PATH"
+export PATH=~/Code/wellcar/bin:$PATH
+export PATH="~/.deno/bin:$PATH"
 
 # As per homebrew opnessl instructions:
 #   For compilers to find openssl@1.1 you may need to set:
