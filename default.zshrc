@@ -127,6 +127,11 @@ if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
 fi
 
+# Setup for nvm, node version manager
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 # Ensure my github SSH key is loaded
 if [[ `ssh-add -L` != (*`cat ~/.ssh/github_rsa.pub`*) ]]
 then
