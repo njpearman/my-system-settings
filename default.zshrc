@@ -150,7 +150,20 @@ export FZF_DEFAULT_COMMAND="rg "\
 ### Git Aliases
 
 # Interactive rebase of all commits since branching
-alias ggra="git rebase -i \$(git merge-base master HEAD)"
+function ggra() {
+  if [[ -n $(git branch | grep master | xargs) ]]
+  then
+    echo "Rebasing to master"
+    git rebase -i $(git merge-base master HEAD)
+  elif [[ -n $(git branch | grep main | xargs) ]]
+  then
+    echo "Rebasing to main"
+    git rebase -i $(git merge-base main HEAD)
+  else
+    echo "Could not find master or main"
+    return 1
+  fi
+}
 
 # Checkout the repo trunk if it's either main or master
 # I'm not sure if redirecting STDERR in this way is bad or
