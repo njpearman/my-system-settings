@@ -230,8 +230,8 @@ export SW_EXER=$SW_HOME/learner-exercises
 
 function swgsu() {
   # In Xsh scripts, whitespace is not understood between an assignment
-  local PULL="git pull"
-  local UPDATE_SUBMODULES="git submodule update --remote --rebase"
+  local PULL="git pull --recurse-submodules --rebase"
+  local UPDATE_SUBMODULES="git submodule update --remote --rebase --recursive"
 
   moveAndExecute "${PULL} && ${UPDATE_SUBMODULES}"
 }
