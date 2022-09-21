@@ -124,6 +124,8 @@ nnoremap <leader>nn :noh<CR>
 nnoremap <leader>tc :tabe ~/Code<CR>
 nnoremap <leader>tv :tabe ~/.config/nvim/init.vim<CR>
 nnoremap <leader>tz :tabe ~/.zshrc<CR>
+nnoremap <leader>tgg :tabe ~/.gitconfig<CR>
+nnoremap <leader>tgi :tabe ~/.gitignore_global<CR>
 
 " Update Plugged and plugins on startup
 " PlugUpgrade
