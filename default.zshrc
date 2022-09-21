@@ -194,6 +194,32 @@ function ggpm() {
 # Short form git pull origin <current branch>
 alias ggpo="git pull origin \$(git branch --show-current)"
 
+### JS aliases
+
+# Yarn-based silent jest
+
+alias yjs="yarn jest --silent"
+
+### Kernel concerns
+
+export KNL_HOME=$HOME/Code/kernel
+export KNL_API=$KNL_HOME/liquid/api
+
+function knldb() {
+  cd $KNL_API
+
+  docker compose -f docker-compose.yml up
+  # To include pgadmin: -f ~/Code/my-system-settings/pg-admin.docker-compose.yml
+}
+
+function knldbdown() {
+  cd $KNL_API
+
+  docker compose -f docker-compose.yml down
+  # To include pgadmin: -f ~/Code/my-system-settings/pg-admin.docker-compose.yml
+}
+### End Kernel concerns
+
 ### Skiller Whale concerns
 
 export SW_HOME=$HOME/Code/skillerwhale
