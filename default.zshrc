@@ -228,7 +228,7 @@ alias dprune="docker image prune -f && docker container prune -f && docker netwo
 alias dpruneall="dprune && docker volume prune -f"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '~/Code/google-cloud-sdk/path.zsh.inc' ]; then . '~/Code/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/Code/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Code/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '~/Code/google-cloud-sdk/completion.zsh.inc' ]; then . '~/Code/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/Code/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Code/google-cloud-sdk/completion.zsh.inc"; fi
