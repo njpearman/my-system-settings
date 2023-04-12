@@ -224,74 +224,8 @@ function knldbdown() {
 }
 ### End Kernel concerns
 
-### Skiller Whale concerns
-
-export SW_HOME=$HOME/Code/skillerwhale
-export SW_APP=$SW_HOME/app
-export SW_CURR=$SW_APP/curriculum
-export SW_EXER=$SW_HOME/learner-exercises
-
-
-function swgsu() {
-  # In Xsh scripts, whitespace is not understood between an assignment
-  local PULL="git pull --recurse-submodules --rebase"
-  local UPDATE_SUBMODULES="git submodule update --remote --rebase --recursive"
-
-  moveAndExecute "${PULL} && ${UPDATE_SUBMODULES}"
-}
-
-function swfmt() {
-  local COMMAND="docker-compose run curriculum python scripts/standardise_all_markdown.py"
-
-  moveAndExecute ${COMMAND}
-}
-
-function swvmm() {
-  local COMMAND='docker-compose run curriculum pytest tests/teaching_content/test_module_content_validity.py'
-
-  moveAndExecute ${COMMAND}
-}
-
-function swgmm() {
-  local COMMAND='docker-compose exec curriculum python3 scripts/generate_module.py'
-
-  if [[ -z $1 ]]
-  then
-    echo "A technology name is needed"
-    return 1
-  fi
-
-  if [[ -z $2 ]]
-  then
-    echo "A curriculum name is needed"
-    return 2
-  fi
-
-  if [[ -z $3 ]]
-  then
-    echo "A module name is needed"
-    return 3
-  fi
-
-  moveAndExecute "${COMMAND} ${1} ${2} ${3}"
-}
-
-function moveAndExecute() {
-  echo "Running '$1'\n...."
-  if [[ `pwd` == $SW_APP ]]
-  then
-    eval $1
-  else
-    pushd $SW_APP
-    eval $1
-    popd
-  fi
-}
-
 alias dprune="docker image prune -f && docker container prune -f && docker network prune -f"
 alias dpruneall="dprune && docker volume prune -f"
-
-### End Skiller Whale concerns
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '~/Code/google-cloud-sdk/path.zsh.inc' ]; then . '~/Code/google-cloud-sdk/path.zsh.inc'; fi
