@@ -206,8 +206,9 @@ alias yjs="yarn jest --silent"
 
 ### Kernel concerns
 
-export KNL_HOME=$HOME/Code/kernel
-export KNL_API=$KNL_HOME/liquid/api
+export KNL=$HOME/Code/usekernel.com
+export KNL_HOME=$HOME/Code/usekernel.com/kernel
+export KNL_API=$KNL_HOME/api
 
 function knldb() {
   cd $KNL_API
