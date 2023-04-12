@@ -116,7 +116,11 @@ export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 
 #source $HOME/.rvm/scripts/rvm
-eval "$(rbenv init -)"
+if command -v rbenv &> /dev/null; then
+  eval "$(rbenv init -)"
+else
+  echo "rbenv unavailable"
+fi
 
 # Because git started displaying in French, ...
 alias git='LANG=en_GB git'
