@@ -2,6 +2,9 @@
 syntax enable
 filetype plugin indent on
 
+" Ensure <leader> is backslash
+let mapleader="\\"
+
 "
 " Plugin related setup - requires sourcing the core-plugins.vim file first
 " within a `call plug#begin('~/.vim/plugged') .. call#end('~/.vim/plugged')`
