@@ -68,9 +68,10 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git deno)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+echo "Oh my zsh'd"
 
 # User configuration
 
@@ -105,15 +106,26 @@ source $ZSH/oh-my-zsh.sh
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+# Prefer local bin to /usr/bin
+export PATH=/usr/local/bin:$PATH
 # Adds FZF to path from Vim plugins
 export PATH=$PATH:~/.vim/plugged/fzf/bin
 export PATH=~/Code/wellcar/bin:$PATH
 export PATH="~/.deno/bin:$PATH"
 
-# As per homebrew opnessl instructions:
+# Ruby concerns
+export GEM_HOME="$HOME/.gem"
+
+# End ruby concerns
+
+# Sets up homebrew, including PATH for things like ripgrep and neovim
+eval "$(/opt/homebrew/bin/brew shellenv)"
+echo "Set up homebrew"
+
+# As per homebrew opnessl instructions (disabled as this broke my `rbenv install` attempt)
 #   For compilers to find openssl@1.1 you may need to set:
-export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+# export LDFLAGS="-L/opt/homebrew/openssl@1.1/lib"
+# export CPPFLAGS="-I/opt/homebrew/openssl@1.1/include"
 
 #source $HOME/.rvm/scripts/rvm
 if command -v rbenv &> /dev/null; then
@@ -122,19 +134,16 @@ else
   echo "rbenv unavailable"
 fi
 
+export PYENV_ROOT="$HOME/.pyenv"
+
 # Because git started displaying in French, ...
 alias git='LANG=en_GB git'
 
-# Prefer nvim to vim, if present
-if type nvim > /dev/null 2>&1; then
-  echo 'vim mapped to neovim. The future is here.'
-  alias vim='nvim'
-fi
 
 # Setup for nvm, node version manager
 export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Ensure my github SSH key is loaded
 if [[ `ssh-add -L` != (*`cat ~/.ssh/github_rsa.pub`*) ]]
@@ -204,26 +213,13 @@ alias ggpo="git pull origin \$(git branch --show-current)"
 
 alias yjs="yarn jest --silent"
 
-### Kernel concerns
-
-export KNL=$HOME/Code/usekernel.com
-export KNL_HOME=$HOME/Code/usekernel.com/kernel
-export KNL_API=$KNL_HOME/api
-
-function knldb() {
-  cd $KNL_API
-
-  docker compose -f docker-compose.yml up
-  # To include pgadmin: -f ~/Code/my-system-settings/pg-admin.docker-compose.yml
-}
-
-function knldbdown() {
-  cd $KNL_API
-
-  docker compose -f docker-compose.yml down
-  # To include pgadmin: -f ~/Code/my-system-settings/pg-admin.docker-compose.yml
-}
-### End Kernel concerns
+# Project-specific set up
+if [ -f "./.projectsrc" ]; then
+  source "./.projectsrc"
+  echo "Loaded private commands and things for your projects"
+else
+  echo "No projects file to source"
+fi
 
 alias dprune="docker image prune -f && docker container prune -f && docker network prune -f"
 alias dpruneall="dprune && docker volume prune -f"
@@ -233,3 +229,41 @@ if [ -f "$HOME/Code/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Code/google-
 
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/Code/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Code/google-cloud-sdk/completion.zsh.inc"; fi
+
+# Prefer nvim to vim, if present
+if type nvim > /dev/null 2>&1; then
+  echo 'vim mapped to neovim. The future is here.'
+  alias vim='nvim'
+else
+  local NVIM_TYPE=`type nvim`
+  echo "Unable to find nvim...${NVIM_TYPE}"
+fi
+
+PATH="$(bash --norc -ec 'IFS=:; paths=($PATH); 
+
+for i in ${!paths[@]}; do 
+if [[ ${paths[i]} == "''/Users/neill/.pyenv/shims''" ]]; then unset '\''paths[i]'\''; 
+fi; done; 
+echo "${paths[*]}"')"
+export PATH="/Users/neill/.pyenv/shims:${PATH}"
+export PYENV_SHELL=zsh
+export PYENV_ENV_VERSION=$(pyenv --version | awk '{print $2}')
+echo "Pyenv version ${PYENV_ENV_VERSION}"
+source "/opt/homebrew/Cellar/pyenv/${PYENV_ENV_VERSION}/completions/pyenv.zsh"
+command pyenv rehash 2>/dev/null
+pyenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(pyenv "sh-$command" "$@")"
+    ;;
+  *)
+    command pyenv "$command" "$@"
+    ;;
+  esac
+}

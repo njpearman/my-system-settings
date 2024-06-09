@@ -5,6 +5,16 @@ filetype plugin indent on
 " Ensure <leader> is backslash
 let mapleader="\\"
 
+" Sets up the internal NeoVim language server using a Lua script
+" See https://expectationmax.github.io/2020/NeoVims-Language-Server-Client
+" lua << EOF
+" 30-10-23 I have no idea where this has come from. I should check git
+" history.
+" require('nvim_lsp').pyls.setup({})
+" EOF
+
+autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
 "
 " Plugin related setup - requires sourcing the core-plugins.vim file first
 " within a `call plug#begin('~/.vim/plugged') .. call#end('~/.vim/plugged')`
@@ -16,6 +26,7 @@ colorscheme tender
 " Plugin shortcuts
 nnoremap <leader>F :NERDTreeToggle<CR>
 nnoremap <leader>// :FZF<CR>
+nnoremap <leader>?? :Rg<CR>
 
 " Settings for vim-markdown
 let g:vim_markdown_folding_style_pythonic = 1
@@ -40,6 +51,11 @@ set softtabstop=2
 set expandtab
 set nu
 set cursorcolumn " Include visual column cursor
+
+" Use a 4-space tab for python files
+autocmd FileType python set tabstop=4 | set shiftwidth=4 | set expandtab
+"autocmd FileType python nnoremap [z [m
+"autocmd FileType python nnoremap ]z ]m
 
 " makes vim look for tags only in ./tags
 set tags=tags

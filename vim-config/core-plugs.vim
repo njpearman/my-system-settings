@@ -27,10 +27,10 @@ Plug 'preservim/nerdtree'
 
 " Language server (seems like a more complete system
 " than ALE, which was another recommendation for Rust)
-Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
+"Plug 'autozimu/LanguageClient-neovim', {
+"      \ 'branch': 'next',
+"      \ 'do': 'bash install.sh',
+"      \ }
 
 " Rust plugin for Vim
 Plug 'rust-lang/rust.vim'
