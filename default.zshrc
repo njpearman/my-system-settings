@@ -168,6 +168,21 @@ export FZF_DEFAULT_COMMAND="rg "\
 "--hidden "\
 "-g \"!{**/node_modules/*,**/.git/*}\""
 
+### General bash aliases
+
+# history piped into ripgrep or grep if ripgrep isn't available, taking the 10
+# most recent matches
+function hirg() {
+  if (rg --version 2> /dev/null)
+  then
+    history | rg $1 | tail -10
+  else
+    history | grep $1 | tail -10
+  fi
+}
+
+### End bash aliases
+
 ### Git Aliases
 
 # Interactive rebase of all commits since branching
