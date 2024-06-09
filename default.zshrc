@@ -113,6 +113,7 @@ export PATH=$PATH:~/.vim/plugged/fzf/bin
 export PATH=~/Code/wellcar/bin:$PATH
 export PATH="~/.deno/bin:$PATH"
 
+<<<<<<< HEAD
 # Ruby concerns
 export GEM_HOME="$HOME/.gem"
 
@@ -123,6 +124,13 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 echo "Set up homebrew"
 
 # As per homebrew opnessl instructions (disabled as this broke my `rbenv install` attempt)
+=======
+# Sets up homebrew, including PATH for things like ripgrep and neovim
+eval "$(/opt/homebrew/bin/brew shellenv)"
+echo "homebrew ready"
+
+# As per homebrew opnessl instructions:
+>>>>>>> aeb305c (feat: bootstrap homebrew)
 #   For compilers to find openssl@1.1 you may need to set:
 # export LDFLAGS="-L/opt/homebrew/openssl@1.1/lib"
 # export CPPFLAGS="-I/opt/homebrew/openssl@1.1/include"
