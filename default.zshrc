@@ -113,7 +113,6 @@ export PATH=$PATH:~/.vim/plugged/fzf/bin
 export PATH=~/Code/wellcar/bin:$PATH
 export PATH="~/.deno/bin:$PATH"
 
-<<<<<<< HEAD
 # Ruby concerns
 export GEM_HOME="$HOME/.gem"
 
@@ -121,16 +120,9 @@ export GEM_HOME="$HOME/.gem"
 
 # Sets up homebrew, including PATH for things like ripgrep and neovim
 eval "$(/opt/homebrew/bin/brew shellenv)"
-echo "Set up homebrew"
+echo "homebrewing"
 
 # As per homebrew opnessl instructions (disabled as this broke my `rbenv install` attempt)
-=======
-# Sets up homebrew, including PATH for things like ripgrep and neovim
-eval "$(/opt/homebrew/bin/brew shellenv)"
-echo "homebrew ready"
-
-# As per homebrew opnessl instructions:
->>>>>>> aeb305c (feat: bootstrap homebrew)
 #   For compilers to find openssl@1.1 you may need to set:
 # export LDFLAGS="-L/opt/homebrew/openssl@1.1/lib"
 # export CPPFLAGS="-I/opt/homebrew/openssl@1.1/include"
@@ -262,10 +254,7 @@ else
   echo "Unable to find nvim...${NVIM_TYPE}"
 fi
 
-<<<<<<< HEAD
-=======
 ### Set up pyenv
->>>>>>> 9cc10f1 (feat: duplicate)
 PATH="$(bash --norc -ec 'IFS=:; paths=($PATH); 
 
 for i in ${!paths[@]}; do 
@@ -294,8 +283,6 @@ pyenv() {
     ;;
   esac
 }
-<<<<<<< HEAD
-=======
 # End pyenv
 
 # pnpm
@@ -305,4 +292,3 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
->>>>>>> 9cc10f1 (feat: duplicate)
