@@ -239,6 +239,10 @@ else
   echo "Unable to find nvim...${NVIM_TYPE}"
 fi
 
+<<<<<<< HEAD
+=======
+### Set up pyenv
+>>>>>>> 9cc10f1 (feat: duplicate)
 PATH="$(bash --norc -ec 'IFS=:; paths=($PATH); 
 
 for i in ${!paths[@]}; do 
@@ -267,3 +271,15 @@ pyenv() {
     ;;
   esac
 }
+<<<<<<< HEAD
+=======
+# End pyenv
+
+# pnpm
+export PNPM_HOME="/Users/neill/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+>>>>>>> 9cc10f1 (feat: duplicate)
