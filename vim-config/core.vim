@@ -132,7 +132,7 @@ endfunction
 " function name, and press return
 nnoremap <leader>jT :call JournalTodayVertical()<CR>
 nnoremap <leader>jt :call JournalToday()<CR>
-nnoremap <leader>jm :call CookingToday()<CR>
+nnoremap <leader>jc :call CookingToday()<CR>
 nnoremap <leader>PP :call ProfanityTypos()<CR>
 nnoremap <leader>dd :call ToDo()<CR>
 
