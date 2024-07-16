@@ -193,6 +193,17 @@ function ggra() {
   fi
 }
 
+# A quick-reference for `glo`, i.e. git log --oneline piped into `head` for an
+# explicit number of lines
+function gloh() {
+  if [[ -n $1 ]]
+  then
+    glo | head -$1
+  else
+    glo | head -10
+  fi
+}
+
 # Checkout the repo trunk if it's either main or master
 # I'm not sure if redirecting STDERR in this way is bad or
 # not idiomatic, but it means that error messages are
