@@ -267,13 +267,13 @@ else
 fi
 
 ### Set up pyenv
-PATH="$(bash --norc -ec 'IFS=:; paths=($PATH); 
+PATH="$(bash --norc -ec 'IFS=:; paths=($PATH);
 
-for i in ${!paths[@]}; do 
-if [[ ${paths[i]} == "''/Users/neill/.pyenv/shims''" ]]; then unset '\''paths[i]'\''; 
-fi; done; 
+for i in ${!paths[@]}; do
+if [[ ${paths[i]} == "''${HOME}/.pyenv/shims''" ]]; then unset '\''paths[i]'\'';
+fi; done;
 echo "${paths[*]}"')"
-export PATH="/Users/neill/.pyenv/shims:${PATH}"
+export PATH="${HOME}/.pyenv/shims:${PATH}"
 export PYENV_SHELL=zsh
 export PYENV_ENV_VERSION=$(pyenv --version | awk '{print $2}')
 echo "Pyenv version ${PYENV_ENV_VERSION}"
@@ -298,9 +298,12 @@ pyenv() {
 # End pyenv
 
 # pnpm
-export PNPM_HOME="/Users/neill/Library/pnpm"
+export PNPM_HOME="${HOME}/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Created by `pipx` on 2024-07-12 15:59:21
+export PATH="$PATH:${HOME}/.local/bin"
