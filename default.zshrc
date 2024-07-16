@@ -240,11 +240,11 @@ alias ggpo="git pull origin \$(git branch --show-current)"
 alias yjs="yarn jest --silent"
 
 # Project-specific set up
-if [ -f "./.projectsrc" ]; then
-  source "./.projectsrc"
-  echo "Loaded private commands and things for your projects"
+if [ -f "$HOME/.projects.zshrc" ]; then
+  source "$HOME/.projects.zshrc"
+  echo "Loaded custom commands and things for your projects from ~/.projects.zshrc"
 else
-  echo "No projects file to source"
+  echo "No projects file to source. Add custom setup to ~/.projects.zshrc"
 fi
 
 alias dprune="docker image prune -f && docker container prune -f && docker network prune -f"
