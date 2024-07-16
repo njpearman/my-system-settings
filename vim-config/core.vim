@@ -28,6 +28,11 @@ nnoremap <leader>F :NERDTreeToggle<CR>
 nnoremap <leader>// :FZF<CR>
 nnoremap <leader>?? :Rg<CR>
 
+" Edit shortcuts
+nnoremap <leader>er :tabe ~/.vimrc<CR>
+nnoremap <leader>es :tabe ~/.vim/custom/core.vim<CR>
+nnoremap <leader>ez :tabe ~/.zshrc<CR>
+
 " Settings for vim-markdown
 let g:vim_markdown_folding_style_pythonic = 1
 
