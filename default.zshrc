@@ -165,7 +165,7 @@ export FZF_DEFAULT_COMMAND="rg "\
 # history piped into ripgrep or grep if ripgrep isn't available, taking the 10
 # most recent matches
 function hirg() {
-  if (rg --version 2> /dev/null)
+  if rg --version &> /dev/null
   then
     history | rg $1 | tail -10
   else
