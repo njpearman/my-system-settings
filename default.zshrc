@@ -258,8 +258,9 @@ if [ -f "$HOME/Code/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Code/g
 
 # Prefer nvim to vim, if present
 if type nvim > /dev/null 2>&1; then
-  echo 'vim mapped to neovim. The future is here.'
+  echo 'vim and vimdiff mapped to neovim. The future is here.'
   alias vim='nvim'
+  alias vimdiff='nvim -d'
 else
   local NVIM_TYPE=`type nvim`
   echo "Unable to find nvim...${NVIM_TYPE}"
