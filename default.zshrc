@@ -116,6 +116,22 @@ export PATH="~/.deno/bin:$PATH"
 # Ruby concerns
 export GEM_HOME="$HOME/.gem"
 
+function npost() {
+    local post_name="$*"
+
+    # Run jekyll compose and process the output to get the file path
+    local file
+    file=$(jekyll compose "$post_name" \
+    | sed -r 's/\x1b\[[0-9;]*m//g' \
+    | awk '/New post created at/ {print $5}')
+
+    # Check if file path is valid and open it in nvim
+    if [[ -n "$file" ]]; then
+        vim "$file"
+    else
+        echo "Failed to extract file path."
+    fi
+}
 # End ruby concerns
 
 # Sets up homebrew, including PATH for things like ripgrep and neovim
