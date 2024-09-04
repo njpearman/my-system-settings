@@ -129,6 +129,33 @@ function! ProfanityTypos()
   execute "split" "~/journal/profanities.txt"
 endfunction
 
+
+" Function to open a new blog post in a split panel
+function! NewPost()
+    let post_name = input('Post title: ')
+
+    " Define the shell command to create the post and fully remove color codes
+    let cmd = 'jekyll compose "' . post_name . '" | sed -r "s/\\x1b\\[[0-9;]*m//g" | awk ''/New post created at/ {print $5}'''
+
+    " Run the command and capture the output (file path)
+    let file = system(cmd)
+
+    " Trim any extra newlines or whitespace from the output
+    let file = substitute(file, '\n', '', 'g')
+
+    " Check if a valid file path was returned
+    if empty(file)
+        echo "Error: No file path found. This might occur if the title is repeated."
+    else
+        " Open the new post in a vertical split
+        execute 'vsplit ' . file
+    endif
+endfunction
+
+" Create a custom Vim command to call the function
+command! NewPost call NewPost()
+
+
 "
 " MAPPINGS
 "
