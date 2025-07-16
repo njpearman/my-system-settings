@@ -117,21 +117,28 @@ export PATH="~/.deno/bin:$PATH"
 export GEM_HOME="$HOME/.gem"
 
 function npost() {
+    # Check if we're in a Jekyll site root by checking for _config.yml and _posts
+    if [[ ! -f "_config.yml" || ! -d "_posts" ]]; then
+        echo "Error: Not in a Jekyll site root."
+        return 1
+    fi
+
     local post_name="$*"
 
-    # Run jekyll compose and process the output to get the file path
+    # Run the Jekyll compose command
     local file
     file=$(jekyll compose "$post_name" \
-    | sed -r 's/\x1b\[[0-9;]*m//g' \
-    | awk '/New post created at/ {print $5}')
+        | sed -r 's/\x1b\[[0-9;]*m//g' \
+        | awk '/New post created at/ {print $5}')
 
-    # Check if file path is valid and open it in nvim
+    # Open the file if a valid path is found
     if [[ -n "$file" ]]; then
-        vim "$file"
+        nvim "$file"
     else
-        echo "Failed to extract file path."
+        echo "Error: No file path found. This might occur if the title is repeated."
     fi
 }
+
 # End ruby concerns
 
 # Sets up homebrew, including PATH for things like ripgrep and neovim
@@ -263,8 +270,12 @@ else
   echo "No projects file to source. Add custom setup to ~/.projects.zshrc"
 fi
 
+### Docker / podman concerns
+
 alias dprune="docker image prune -f && docker container prune -f && docker network prune -f"
 alias dpruneall="dprune && docker volume prune -f"
+
+### End docker / podman
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/Code/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Code/google-cloud-sdk/path.zsh.inc"; fi
@@ -323,3 +334,30 @@ esac
 
 # Created by `pipx` on 2024-07-12 15:59:21
 export PATH="$PATH:${HOME}/.local/bin"
+
+### LLM concerns
+
+clpaste() {
+  # Allow overriding file path as the first argument
+  local filepath="${1:-$(pbpaste | head -n 1 | sed -E 's/^[#;/[:space:]]*([[:alnum:]/._-]+)[[:space:]]*(\*\/)?$/\1/')}"
+
+  # Bail if no file path was found
+  if [[ -z "$filepath" ]]; then
+    echo "No valid file path found in the clipboard or provided as an argument."
+    return 1
+  fi
+
+  # Copy the entire clipboard content except the first line
+  local content=$(pbpaste | tail -n +2)
+
+  # Check if the file exists and store the result
+  if [[ -e "$filepath" ]]; then
+    echo "$content" > "$filepath"
+    echo "Updated existing file: $filepath"
+  else
+    echo "$content" > "$filepath"
+    echo "Created new file: $filepath"
+  fi
+}
+
+### End LLM concerns

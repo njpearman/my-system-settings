@@ -130,11 +130,17 @@ function! ProfanityTypos()
 endfunction
 
 
-" Function to open a new blog post in a split panel
+" Function to create a new blog post in a split panel if in Jekyll root
 function! NewPost()
+    " Check if we are in the Jekyll root by looking for _config.yml and _posts directory
+    if !filereadable('_config.yml') || !isdirectory('_posts')
+        echo "Error: Not in a Jekyll site root."
+        return
+    endif
+
     let post_name = input('Post title: ')
 
-    " Define the shell command to create the post and fully remove color codes
+    " Define the shell command to create the post and remove color codes
     let cmd = 'jekyll compose "' . post_name . '" | sed -r "s/\\x1b\\[[0-9;]*m//g" | awk ''/New post created at/ {print $5}'''
 
     " Run the command and capture the output (file path)
