@@ -6,4 +6,3 @@ source ~/.vim/custom/core-plugs.vim
 call plug#end()
 
 source ~/.vim/custom/core.vim
-source ~/.vim/custom/skiller-whale.vim
