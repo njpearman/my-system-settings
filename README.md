@@ -26,6 +26,11 @@ ln -s vim-config ~/.vim/custom
 ```
 4. Launch vim, install the plugins with `:PlugInstall` then close and relaunch vim.
 
+## VS Code / Cursor
+
+The repo contains a list of useful extensions that can be executed with a shell, e.g. `bash extensions.vscode` or `zsh extensions.vscode`.
+Note that it requires the `code` CLI command to be installed and available.
+
 ## Global gitignore file
 
 As far as I can tell, git does not read global gitignore files that are symbolic links.
