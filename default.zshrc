@@ -168,12 +168,155 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# Ensure my github SSH key is loaded
-if [[ `ssh-add -L` != (*`cat ~/.ssh/github_rsa.pub`*) ]]
-then
-  echo "Adding missing github SSH key to keychain"
-  ssh-add --apple-use-keychain ~/.ssh/github_rsa
+##########
+# Ensure SSH keys are loaded into keychain
+##########
+#
+# SSH Key Auto-loader with Whitelist
+echo "Checking SSH key auto-load configuration..."
+
+allowlist_file="$HOME/.ssh/auto-load-allow-list"
+
+# Check if allowlist file exists
+if [[ ! -f "$allowlist_file" ]]; then
+  echo "Auto-load allowlist file not found: $allowlist_file"
+  echo "Create this file with one key name per line (without .pub extension)"
+  echo "Example contents:"
+  echo "  github_rsa"
+  echo "  work_ed25519"
+  echo "  personal_ecdsa"
+  return 0
 fi
+
+# Read allowlist (skip empty lines and comments)
+declare -a allowed_keys
+while IFS= read -r line || [[ -n "$line" ]]; do
+  # Skip empty lines and comments
+  [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+  # Trim whitespace
+  key_name=$(echo "$line" | xargs)
+  [[ -n "$key_name" ]] && allowed_keys+=("$key_name")
+done < "$allowlist_file"
+
+if [[ ${#allowed_keys[@]} -eq 0 ]]; then
+  echo "No keys found in allowlist file"
+  return 0
+fi
+
+echo "Found ${#allowed_keys[@]} key(s) in allowlist"
+
+# Get currently loaded keys
+loaded_keys=$(ssh-add -L 2>/dev/null)
+
+# Counter for added keys
+added_count=0
+declare -a added_key_names
+declare -a missing_keys
+declare -a failed_keys
+
+# Process each allowed key
+for key_name in "${allowed_keys[@]}"; do
+  pub_key_path="$HOME/.ssh/${key_name}.pub"
+  private_key_path="$HOME/.ssh/${key_name}"
+
+  # Check if public key exists
+  if [[ ! -f "$pub_key_path" ]]; then
+    missing_keys+=("$key_name (public key not found)")
+    continue
+  fi
+
+  # Check if private key exists
+  if [[ ! -f "$private_key_path" ]]; then
+    missing_keys+=("$key_name (private key not found)")
+    continue
+  fi
+
+  # Get the public key content
+  pub_key_content=$(cat "$pub_key_path" 2>/dev/null)
+
+  if [[ -z "$pub_key_content" ]]; then
+    failed_keys+=("$key_name (unable to read public key)")
+    continue
+  fi
+
+  # Check if this key is already loaded
+  if [[ "$loaded_keys" != *"$pub_key_content"* ]]; then
+    echo "Adding SSH key: $key_name"
+    if ssh-add --apple-use-keychain "$private_key_path" 2>/dev/null; then
+      ((added_count++))
+      added_key_names+=("$key_name")
+    else
+      failed_keys+=("$key_name (failed to add to keychain)")
+    fi
+  fi
+done
+
+# Print summary
+echo
+if [[ $added_count -eq 0 ]]; then
+  echo "✓ All allowlisted SSH keys already loaded"
+else
+  echo "✓ Added $added_count SSH key(s) to keychain:"
+  for key in "${added_key_names[@]}"; do
+    echo "  - $key"
+  done
+fi
+
+# Report any issues
+if [[ ${#missing_keys[@]} -gt 0 ]]; then
+  echo
+  echo "⚠ Keys in allowlist but not found:"
+  for key in "${missing_keys[@]}"; do
+    echo "  - $key"
+  done
+fi
+
+if [[ ${#failed_keys[@]} -gt 0 ]]; then
+  echo
+  echo "✗ Keys that failed to load:"
+  for key in "${failed_keys[@]}"; do
+    echo "  - $key"
+  done
+fi
+
+# Find public keys not in allowlist
+echo
+echo "Public keys in ~/.ssh/ not in allowlist:"
+found_unlisted=false
+for pub_key in ~/.ssh/*.pub; do
+  [[ ! -f "$pub_key" ]] && continue
+
+  key_basename=$(basename "$pub_key" .pub)
+
+  # Check if this key is in the allowlist
+  key_in_allowlist=false
+  for allowed_key in "${allowed_keys[@]}"; do
+    if [[ "$key_basename" == "$allowed_key" ]]; then
+      key_in_allowlist=true
+      break
+    fi
+  done
+
+  if [[ "$key_in_allowlist" == false ]]; then
+    echo "  - $key_basename"
+    found_unlisted=true
+  fi
+done
+
+if [[ "$found_unlisted" == false ]]; then
+  echo "  (none)"
+fi
+#
+##########
+# End key loader
+##########
+
+# Ensure my github SSH key is loaded
+# if [[ `ssh-add -L` != (*`cat ~/.ssh/github_rsa.pub`*) ]]
+# then
+#   echo "Adding missing github SSH key to keychain"
+#   ssh-add --apple-use-keychain ~/.ssh/github_rsa
+# fi
 
 # Customize FZF default command, particularly to ignore
 export FZF_DEFAULT_COMMAND="rg "\
